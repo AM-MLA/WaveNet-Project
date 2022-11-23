@@ -18,16 +18,16 @@ class WaveNet_model():
             out, skipx = self.__residual_block(out)
             skip_connections.append(skipx)
 
-        out = tf.keras.layers.Add()(skip_connections)
-        out = tf.keras.layers.Activation('relu')(out)
-        out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(out)
-        out = tf.keras.layers.Activation('relu')(out)
-        out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(out)
+        skip_out = tf.keras.layers.Add()(skip_connections)
+        skip_out = tf.keras.layers.Activation('relu')(skip_out)
+        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(skip_out)
+        skip_out = tf.keras.layers.Activation('relu')(skip_out)
+        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(skip_out)
 
 
-        outputWN =  tf.keras.layers.Activation('softmax', name="WN_Output")(out)
+        outputWN =  tf.keras.layers.Activation('softmax', name="WN_Output")(skip_out)
 
-        self.model = tf.keras.models.Model(inputs = inputWN, outputs = outputWN)
+        self.model = tf.keras.models.Model(inputs = inputWN, outputs = out)
         
         # return WNmodel
 
