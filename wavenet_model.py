@@ -75,6 +75,3 @@ class WaveNet_model():
         resx = tf.keras.layers.Add()([x, resx])
 
         return resx, skipx
-        
-    
-blablabla
