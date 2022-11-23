@@ -77,3 +77,4 @@ class WaveNet_model():
         return resx, skipx
         
     
+blablabla
