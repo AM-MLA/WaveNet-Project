@@ -9,16 +9,17 @@ from wavenet_model import WaveNet_model
 
 ## Data packaging
 path = "../smaller_set/audio/"
+files = [path+i for i in os.listdir(path)]
 
-samplerate, data = wavfile.read(os.listdir(path)[0])
+samplerate, data = wavfile.read(files[0])
 
 # audio files have been resampled in 8 bits and 16kHz frequency
 
 audios = np.ones((100,samplerate*10))*128
-for k in range(len(os.listdir())):
-    filename = os.listdir()[k]
+for k in range(len(files)):
+    filename = files[k]
     if filename[-4:]=='.wav':
-        samplerate,data = wavfile.read(os.listdir()[k])
+        samplerate,data = wavfile.read(files[k])
         if len(data)<=samplerate*10:
             audios[k,:len(data)] = data
         else:
