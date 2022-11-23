@@ -8,11 +8,9 @@ from wavenet_model import WaveNet_model
 
 
 ## Data packaging
+path = "../smaller_set/audio/"
 
-path = "/Users/maximeboulanger/Desktop/100 common voices  8bits/audio"
-os.chdir(path)
-
-samplerate, data = wavfile.read(os.listdir()[0])
+samplerate, data = wavfile.read(os.listdir(path)[0])
 
 # audio files have been resampled in 8 bits and 16kHz frequency
 
