@@ -49,3 +49,16 @@ WNmodel.summary()
 sgd = tf.keras.optimizers.Adam()  #SGD(lr=0.001, momentum=0.9) 
 WNmodel.compile(sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
+# Save the model as a .h5 file for Neutron
+# WNmodel.save("WNmodel2511.h5")
+
+## --------------- Traning ---------------
+num_epochs = 10
+batch_size = 32
+history = WNmodel.fit(x=train_audios, y=train_audios,
+                    epochs=num_epochs,
+                    batch_size=batch_size,
+                    shuffle=True,
+                    validation_data=(train_audios, train_audios),
+                    verbose=1)
+
