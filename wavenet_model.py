@@ -18,18 +18,17 @@ class WaveNet_model():
             out, skipx = self.__residual_block(out)
             skip_connections.append(skipx)
 
-        skip_out = tf.keras.layers.Add()(skip_connections)
-        skip_out = tf.keras.layers.Activation('relu')(skip_out)
-        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(skip_out)
-        skip_out = tf.keras.layers.Activation('relu')(skip_out)
-        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same")(skip_out)
+        skip_out = tf.keras.layers.Add(name="SUM_SkipConnection")(skip_connections)
+        skip_out = tf.keras.layers.Activation('relu', name="RELU1_SkipConnection")(skip_out)
+        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same", name="CONV1_SkipConnection")(skip_out)
+        skip_out = tf.keras.layers.Activation('relu', name="RELU2_SkipConnection")(skip_out)
+        skip_out = tf.keras.layers.Conv1D(filters=256, kernel_size=1, padding = "same", name="CONV2_SkipConnection")(skip_out)
 
+        outputWN =  tf.keras.layers.Activation('softmax', name="SOFTMAX_SkipConnection")(skip_out)
 
-        outputWN =  tf.keras.layers.Activation('softmax', name="WN_Output")(skip_out)
-
-        self.model = tf.keras.models.Model(inputs = inputWN, outputs = out)
+        # self.model = tf.keras.models.Model(inputs = inputWN, outputs = out)
         
-        # return WNmodel
+        
 
 
     def __delated_conv(self, input, nb_dilatation : int) -> tf.keras.layers.Conv1D :
