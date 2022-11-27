@@ -9,7 +9,7 @@ class WaveNet_model():
         self.nb_filters= nb_filters
 
         #à compléter
-        inputWN = tf.keras.Input(shape = (audio_length, 256), name="WN Input")
+        inputWN = tf.keras.Input(shape = (1,audio_length), name="WN Input")
 
         out = tf.keras.layers.Conv1D(filters=nb_filters,kernel_size=2, padding="causal", name='initial_causal_convolution')(inputWN)
 
@@ -26,7 +26,7 @@ class WaveNet_model():
 
         outputWN =  tf.keras.layers.Activation('softmax', name="SOFTMAX_SkipConnection")(skip_out)
 
-        # self.model = tf.keras.models.Model(inputs = inputWN, outputs = out)
+        self.model = tf.keras.models.Model(inputs = inputWN, outputs = out)
         
         
 

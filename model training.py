@@ -15,6 +15,7 @@ samplerate, data = wavfile.read(files[0])
 
 # audio files have been resampled in 8 bits and 16kHz frequency
 
+#audio: (nb_samples,length_audio) matrix containing all the .wav audio files
 audios = np.ones((100,samplerate*10))*128
 for k in range(len(files)):
     filename = files[k]
@@ -25,13 +26,16 @@ for k in range(len(files)):
         else:
             audios[k,:]=data[:samplerate*10]
 
+audios = np.reshape(audios,(100, 1, 160000))
+
 plt.figure()
-plt.plot([k/samplerate for k in range(len(audios[10,:]))],audios[10,:])
+plt.plot([k/samplerate for k in range(len(audios[10,0,:]))],audios[10,0,:])
 plt.xlabel("time (s)")
 plt.ylabel("bits (/256)")
 plt.show()
 
 
+# Data normalisation in float32
 nb_train_audios = int(0.8*len(os.listdir()))
 train_audios = audios[:nb_train_audios]/255.0
 test_audios = audios[nb_train_audios:]/255.0
@@ -40,9 +44,10 @@ test_audios = audios[nb_train_audios:]/255.0
 
 WNmodel = WaveNet_model(
     nb_layers = 10,
-    nb_filters = 256,
+    nb_filters = 64,
     audio_length=samplerate*10 # length of audio files is 10s max
 ).model
+
 
 WNmodel.summary()
 
