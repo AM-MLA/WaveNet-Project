@@ -3,14 +3,14 @@ import tensorflow as tf
 
 class WavenetModel:
 
-    def __init__(self, nb_layers, **kwargs):
+    def __init__(self, nb_layers, nb_dilatation, **kwargs):
         input = tf.keras.Input(name="WaveNet Input")
         self.causal_conv = tf.keras.layers.Conv1D(paddinf="causal",
                                                   name="causal_convolution")(input)
 
         self.skipped = []
         for i in range(nb_layers):
-            residual, skipped = self.__generate_block(2)
+            residual, skipped = self.__generate_block(nb_dilatation)
             self.skipped.append(skipped)
 
         skip_out = tf.keras.layers.Add(name="skip connexion")(self.skipped)
