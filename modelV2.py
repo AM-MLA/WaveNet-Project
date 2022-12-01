@@ -3,7 +3,7 @@ import tensorflow as tf
 
 class WavenetModel:
 
-    def __init__(self,nb_residual, nb_layers, nb_dilatation, audio_length, **kwargs):
+    def __init__(self,nb_residual, nb_dilatation, audio_length, **kwargs):
         input = tf.keras.Input(shape=(audio_length, 1), name="WaveNet_Input")
         self.causal_conv = tf.keras.layers.Conv1D(filters=nb_residual,
                                                   kernel_size=1,
@@ -11,14 +11,16 @@ class WavenetModel:
                                                   name="causal_convolution")(input)
 
         self.skipped = []
+        self.input_from_causal = self.causal_conv
         for i in range(nb_residual):
             residual, skipped = self.__generate_block(nb_dilatation)
+            self.input_from_causal = residual
             self.skipped.append(skipped)
 
         skip_out = tf.keras.layers.Add(name="skip_connexion")(self.skipped)
         skip_out = tf.keras.layers.Activation('relu', name="RELU1_SkipConnection")(skip_out)
-        skip_out = tf.keras.layers.Conv1D(filters=1,
-                                          kernel_size=2,
+        skip_out = tf.keras.layers.Conv1D(filters=128,
+                                          kernel_size=1,
                                           padding="same", name="CONV1_SkipConnection")(skip_out)
         skip_out = tf.keras.layers.Activation('relu', name="RELU2_SkipConnection")(skip_out)
         # as 256 is the codec of the audio
@@ -32,8 +34,8 @@ class WavenetModel:
                                     outputs=outputWN)
 
     def __generate_block(self, nb_dilatation):
-        tanh_dilated_conv = self.causal_conv
-        sigma_dilated_conv = self.causal_conv
+        tanh_dilated_conv = self.input_from_causal
+        sigma_dilated_conv = self.input_from_causal
         for j in range(nb_dilatation):
             # first dilated convolution, activated with tanh
             for i in range(10):

@@ -47,16 +47,16 @@ test_audios = audios[nb_train_audios:]/255.0
 
 ## Train model
 
-# WNmodel = WaveNet_modelV2(
-#     nb_layers=10,
-#     nb_dilatation=2,
-#     audio_length=audio_length   # length of audio files is 10s max
-# ).model
-
-WNmodel = WaveNet_model(
-    nb_layers = 10,
-    audio_length=audio_length # length of audio files is 10s max
+WNmodel = WaveNet_modelV2(
+    nb_residual=10,
+    nb_dilatation=2,
+    audio_length=audio_length   # length of audio files is 10s max
 ).model
+
+# WNmodel = WaveNet_model(
+#     nb_layers = 10,
+#     audio_length=audio_length # length of audio files is 10s max
+# ).model
 
 WNmodel.summary()
 
