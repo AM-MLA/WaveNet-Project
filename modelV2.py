@@ -3,25 +3,27 @@ import tensorflow as tf
 
 class WavenetModel:
 
-    def __init__(self, nb_layers, nb_dilatation, audio_length, **kwargs):
+    def __init__(self,nb_residual, nb_layers, nb_dilatation, audio_length, **kwargs):
         input = tf.keras.Input(shape=(audio_length, 1), name="WaveNet_Input")
-        self.causal_conv = tf.keras.layers.Conv1D(filters=1,
-                                                  kernel_size=2,
+        self.causal_conv = tf.keras.layers.Conv1D(filters=nb_residual,
+                                                  kernel_size=1,
                                                   padding="causal",
                                                   name="causal_convolution")(input)
 
         self.skipped = []
-        for i in range(nb_layers):
+        for i in range(nb_residual):
             residual, skipped = self.__generate_block(nb_dilatation)
             self.skipped.append(skipped)
 
         skip_out = tf.keras.layers.Add(name="skip_connexion")(self.skipped)
         skip_out = tf.keras.layers.Activation('relu', name="RELU1_SkipConnection")(skip_out)
         skip_out = tf.keras.layers.Conv1D(filters=1,
-                                          kernel_size=1,
+                                          kernel_size=2,
                                           padding="same", name="CONV1_SkipConnection")(skip_out)
         skip_out = tf.keras.layers.Activation('relu', name="RELU2_SkipConnection")(skip_out)
-        skip_out = tf.keras.layers.Conv1D(filters=1,
+        # as 256 is the codec of the audio
+        # The model outputs a categorical distribution over the next value xt with a softmax layer
+        skip_out = tf.keras.layers.Conv1D(filters=256,
                                           kernel_size=1,
                                           padding="same", name="CONV2_SkipConnection")(skip_out)
         outputWN = tf.keras.layers.Activation('softmax', name="SOFTMAX_SkipConnection")(skip_out)
