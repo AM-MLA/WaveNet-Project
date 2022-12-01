@@ -4,8 +4,8 @@ import os
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
 
+from modelV2 import WavenetModel as WaveNet_modelV2
 from wavenet_model import WaveNet_model
-
 
 ## Data packaging
 path = "../smaller_set/audio/"
@@ -47,11 +47,16 @@ test_audios = audios[nb_train_audios:]/255.0
 
 ## Train model
 
+# WNmodel = WaveNet_modelV2(
+#     nb_layers=10,
+#     nb_dilatation=2,
+#     audio_length=audio_length   # length of audio files is 10s max
+# ).model
+
 WNmodel = WaveNet_model(
     nb_layers = 10,
     audio_length=audio_length # length of audio files is 10s max
 ).model
-
 
 WNmodel.summary()
 
@@ -59,18 +64,19 @@ sgd = tf.keras.optimizers.Adam()  #SGD(lr=0.001, momentum=0.9)
 WNmodel.compile(sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Save the model as a .h5 file for Neutron
-# WNmodel.save("WNmodel0112_InitialConv1ResidualblocOutputlayers.h5")
+WNmodel.save("WNmodel0112_InitialConv1ResidualblocOutputlayers.h5")
 
 ## --------------- Traning ---------------
 num_epochs = 10
 batch_size = 32
+"""
 history = WNmodel.fit(x=train_audios, y=train_audios,
                     epochs=num_epochs,
                     batch_size=batch_size,
                     shuffle=True,
                     validation_data=(train_audios, train_audios),
                     verbose=1)
-
+"""
 
 
 # Generate data with the trained model
