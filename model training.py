@@ -5,7 +5,6 @@ from scipy.io import wavfile
 import matplotlib.pyplot as plt
 
 from modelV2 import WavenetModel as WaveNet_modelV2
-from wavenet_model import WaveNet_model
 
 ## Data packaging
 path = "../smaller_set/audio/"
@@ -52,11 +51,6 @@ WNmodel = WaveNet_modelV2(
     nb_dilatation=2,
     audio_length=audio_length   # length of audio files is 10s max
 ).model
-
-# WNmodel = WaveNet_model(
-#     nb_layers = 10,
-#     audio_length=audio_length # length of audio files is 10s max
-# ).model
 
 WNmodel.summary()
 

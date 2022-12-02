@@ -59,7 +59,7 @@ class WavenetModel:
                                         kernel_size=1,
                                         padding="same")(multiply)
 
-        residual = tf.keras.layers.Add()([self.causal_conv, conv11])
+        residual = tf.keras.layers.Add()([input, conv11])
         skip = tf.keras.layers.Conv1D(filters=128,
                                       kernel_size=1,
                                       padding="same")(multiply)
