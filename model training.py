@@ -64,14 +64,14 @@ WNmodel.save("WNmodel0112_InitialConv1ResidualblocOutputlayers.h5")
 num_epochs = 10
 batch_size = 32
 
-"""
+
 history = WNmodel.fit(x=train_audios, y=train_audios,
                     epochs=num_epochs,
                     batch_size=batch_size,
                     shuffle=True,
                     validation_data=(train_audios, train_audios),
                     verbose=1)
-"""
+
 
 
 # Generate data with the trained model
