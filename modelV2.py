@@ -4,17 +4,16 @@ import tensorflow as tf
 class WavenetModel:
 
     def __init__(self,nb_residual, nb_dilatation, audio_length, **kwargs):
-        input = tf.keras.Input(shape=(audio_length, 1), name="WaveNet_Input")
+        input = tf.keras.Input(shape=(audio_length, 256,), name="WaveNet_Input")
         self.causal_conv = tf.keras.layers.Conv1D(filters=nb_residual,
                                                   kernel_size=1,
                                                   padding="causal",
                                                   name="causal_convolution")(input)
 
         self.skipped = []
-        self.input_from_causal = self.causal_conv
+        residual = self.causal_conv
         for i in range(nb_residual):
-            residual, skipped = self.__generate_block(nb_dilatation)
-            self.input_from_causal = residual
+            residual, skipped = self.__generate_block(nb_dilatation, residual)
             self.skipped.append(skipped)
 
         skip_out = tf.keras.layers.Add(name="skip_connexion")(self.skipped)
@@ -33,9 +32,9 @@ class WavenetModel:
         self.model = tf.keras.Model(inputs=input,
                                     outputs=outputWN)
 
-    def __generate_block(self, nb_dilatation):
-        tanh_dilated_conv = self.input_from_causal
-        sigma_dilated_conv = self.input_from_causal
+    def __generate_block(self, nb_dilatation, input):
+        tanh_dilated_conv = input
+        sigma_dilated_conv = input
         for j in range(nb_dilatation):
             # first dilated convolution, activated with tanh
             for i in range(10):
@@ -61,7 +60,7 @@ class WavenetModel:
                                         padding="same")(multiply)
 
         residual = tf.keras.layers.Add()([self.causal_conv, conv11])
-        skip = tf.keras.layers.Conv1D(filters=1,
+        skip = tf.keras.layers.Conv1D(filters=128,
                                       kernel_size=1,
                                       padding="same")(multiply)
 
