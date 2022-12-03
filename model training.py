@@ -3,12 +3,15 @@ import tensorflow as tf
 import os
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
-
+from preprocessing import quantize_data, mu_law_encoding, mu_law_expansion
 from modelV2 import WavenetModel as WaveNet_modelV2
 
 ## Data packaging
 path = "../smaller_set/audio/"
 files = [path+i for i in os.listdir(path)]
+f = wave.open(files[0], "r")
+params = f.getparams()
+print(params) ## audio info 
 
 samplerate, data = wavfile.read(files[0])
 audio_depth = 256
@@ -29,6 +32,18 @@ for k in range(len(files)):
             audios[k,:]= data[:audio_length]
 
 audios = np.reshape(audios,(100,audio_length))
+
+# audios = np.ones((100,audio_length))*128    ## preprocessing vérifié avec une audio de 16 bits, sortie [0,255]
+# for k in range(len(files)):
+#     filename = files[k]
+#     if filename[-4:]=='.wav':
+#         samplerate,data = wavfile.read(files[k])
+#         if len(data)<=audio_length:
+#             audios[k,:len(data)] = quantize_data(data, audio_depth)
+#         else:
+#             audios[k,:]= quantize_data(data[:audio_length],audio_depth)
+#
+# audios = np.reshape(audios,(100,audio_length))
 
 
 # Plot 1 example of audio from the dataset
@@ -82,8 +97,13 @@ audio_predicted = WNmodel.predict(test_audios)
 sample1 = audio_predicted[10,:,0]*255+128
 sample2 = audio_predicted[8,:,0]*255+128
 
+def coded2wav(coded,bit_depth):
+    coded = (coded / bit_depth) * 2. - 1
+    mu_gen = mu_law_expansion(coded, bit_depth)
+    return mu_gen
+
 plt.figure()
-plt.plot([k/samplerate for k in range(len(sample1))],sample2)
+plt.plot([k/samplerate for k in range(len(coded2wav(sample1,audio_depth)))],coded2wav(sample2,audio_depth))
 plt.xlabel("time (s)")
 plt.ylabel("bits (/256)")
 plt.show()
