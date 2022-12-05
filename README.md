@@ -5,13 +5,17 @@ The goal of the repository is to provide an implementation of the WaveNet vocode
 Audio samples (French discourse) are available at https://commonvoice.mozilla.org/fr/datasets.
 
 ## Table of Contents
-- [Background](#background)
-- [Requirement](#Requirements)
-- [Repository_structure](#Repository_structure)
-- [Installation](#Installation)
-- [Getting_started](#Getting_started)
-- [Contributors](#Contributors)
-- [References](#References)
+<!-- TOC -->
+* [Wavent Implementation for Machine Learning Project](#wavent-implementation-for-machine-learning-project)
+  * [Table of Contents](#table-of-contents)
+  * [Background](#background)
+  * [Requirements](#requirements)
+  * [Installation](#installation)
+  * [Getting started](#getting-started)
+    * [Docs for command line tools](#docs-for-command-line-tools)
+    * [Contributors](#contributors)
+  * [References](#references)
+<!-- TOC -->
 
 
 ## Background
@@ -30,23 +34,18 @@ matplotlib>=3.6.2
 scipy>=1.9.3 
 
 
-## Repository structure
-This repository contains: 1) WaveNet-Project  2) Documents 3) Demo-repository.
-
-
 ## Installation
 ```
 git clone https://github.com/AM-MLA/WaveNet-Project.git
-pip install -e .
+pip install -r requirements.txt
 ```
 
 ## Getting started
 ### Docs for command line tools
 
 #### params.py
-
+*Work in Progress*  
 Dump hyperparameters to a json file.
-
 Usage:
 
 ```
@@ -54,6 +53,7 @@ python tojson.py --hparams="parameters you want to override" <output_json_path>
 ```
 
 #### model training.py
+*Work in Progress*  
 
 Usage:
 
@@ -62,15 +62,13 @@ python train.py --hparams="parameters you want to override"
 ```
 
 #### mp32wav.py
+*Work in Progress*  
+
 Usage:
 
 ```
 python mp32wav.py 
 ```
-
-### Contributors
-
-This project exists thanks to all the people who contribute. 
 
 ## References
 
