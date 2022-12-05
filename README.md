@@ -7,9 +7,9 @@ Audio samples (French discourse) are available at https://commonvoice.mozilla.or
 ## Table of Contents
 - [Background](#background)
 - [Requirement](#Requirements)
-- [Repository structure](#Repository structure)
+- [Repository_structure](#Repository_structure)
 - [Installation](#Installation)
-- [Getting started](#Getting started)
+- [Getting_started](#Getting_started)
 - [Contributors](#Contributors)
 - [References](#References)
 
