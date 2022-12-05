@@ -9,7 +9,7 @@ Audio samples (French discourse) are available at https://commonvoice.mozilla.or
 - [Requirement](#Requirements)
 - [Repository structure](#Repository structure)
 - [Installation](#Installation)
-- [Getting started](# Getting started)
+- [Getting started](#Getting started)
 - [Contributors](#Contributors)
 - [References](#References)
 
