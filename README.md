@@ -61,7 +61,7 @@ Usage:
 python preprocess.py 
 ```
 
-#### model training.py.py
+#### model training.py
 
 Usage:
 
