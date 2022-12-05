@@ -53,14 +53,6 @@ Usage:
 python tojson.py --hparams="parameters you want to override" <output_json_path>
 ```
 
-#### preprocess.py
-
-Usage:
-
-```
-python preprocess.py 
-```
-
 #### model training.py
 
 Usage:
@@ -73,7 +65,7 @@ python train.py --hparams="parameters you want to override"
 Usage:
 
 ```
-python preprocess.py 
+python mp32wav.py 
 ```
 
 ### Contributors
