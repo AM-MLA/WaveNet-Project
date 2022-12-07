@@ -70,7 +70,7 @@ sgd = tf.keras.optimizers.Adam()  #SGD(lr=0.001, momentum=0.9)
 WNmodel.compile(sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Save the model as a .h5 file for Neutron
-WNmodel.save("WNmodel0112_InitialConv1ResidualblocOutputlayers.h5")
+# WNmodel.save("WNmodel0112_InitialConv1ResidualblocOutputlayers.h5")
 
 ## --------------- Traning ---------------
 num_epochs = 10
