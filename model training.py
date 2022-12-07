@@ -9,9 +9,6 @@ from modelV2 import WavenetModel as WaveNet_modelV2
 ## Data packaging
 path = "../smaller_set/audio/"
 files = [path+i for i in os.listdir(path)]
-f = wave.open(files[0], "r")
-params = f.getparams()
-print(params) ## audio info 
 
 samplerate, data = wavfile.read(files[0])
 audio_depth = 256
