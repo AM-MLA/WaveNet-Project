@@ -5,8 +5,10 @@ class WavenetModel:
 
     def __init__(self,nb_residual, nb_dilatation, audio_length, **kwargs):
         input = tf.keras.Input(shape=(audio_length, 256,), name="WaveNet_Input")
-        self.causal_conv = tf.keras.layers.Conv1D(filters=nb_residual,
-                                                  kernel_size=1,
+        self.causal_conv = tf.keras.layers.Conv1D(filters=1,
+                                                  kernel_size=1024, #correspond au champ receptif du modèle
+                                                  trainable = False,
+                                                  kernel_initializer=tf.keras.initializers.Ones,
                                                   padding="causal",
                                                   name="causal_convolution")(input)
 
@@ -65,3 +67,5 @@ class WavenetModel:
                                       padding="same")(multiply)
 
         return (residual, skip)
+
+
