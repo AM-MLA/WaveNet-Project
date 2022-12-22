@@ -6,18 +6,35 @@ import numpy as np
 
 
 def quantize_data(data, classes):
-    mu_x = mu_law_encoding(data, classes)
+    """ quantization function:
+            [[0,mu]] => [[0,mu]]
+        with:
+            mu = classes-1
+    """
+    mu_x = mu_law_encoding(data, classes-1)
     bins = np.linspace(-1, 1, classes)
     quantized = np.digitize(mu_x, bins) - 1
     return quantized
 
+def coded2wav(coded, bit_depth):
+    """reverse mu law and scale it to a bit depth of 16 bits
+        [[0,bit_depth]] => [[0,65535]]
+    """
+    coded = (coded / bit_depth) * 2. - 1  # standardization
+    mu_gen = (mu_law_expansion(coded, bit_depth) + 1) * 2**15
+    return mu_gen
+
 
 def mu_law_encoding(data, mu):
+    """mu law :
+        [-1,1] => [-1,1]"""
     mu_x = np.sign(data) * np.log(1 + mu * np.abs(data)) / np.log(mu + 1)
     return mu_x
 
 
 def mu_law_expansion(data, mu):
+    """inverse mu law :
+        [-1,1] => [-1,1]"""
     s = np.sign(data) * (np.exp(np.abs(data) * np.log(mu + 1)) - 1) / mu
     return s    
 
