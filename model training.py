@@ -18,10 +18,7 @@ audio_length = samplerate*1
 # audio_length = 256
 
 
-def coded2wav(coded,bit_depth):
-    coded = (coded / bit_depth) * 2. - 1 # reduit et centre
-    mu_gen = mu_law_expansion(coded, bit_depth)
-    return mu_gen
+
 
 
 
